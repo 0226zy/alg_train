@@ -1,35 +1,47 @@
 package sort
 
-func QuickSort(datas []int) {
-	quick_sort(datas, 0, len(datas)-1)
+import (
+	"math/rand"
+	"time"
+)
+
+func QuickSort(nums []int) {
+	quickSort(nums, 0, len(nums)-1)
 }
 
-func quick_sort(datas []int, l, r int) {
-
-	if l >= r {
+func quickSort(nums []int, start, end int) {
+	if start >= end {
 		return
 	}
-	x, y := l, r
-	base := datas[l]
+	rand.Seed(time.Now().UnixNano())
+	mid := partition(nums, start, end)
+	quickSort(nums, start, mid-1)
+	quickSort(nums, mid+1, end)
+}
 
-	for x < y {
-		for x < y && datas[y] >= base {
-			y = y - 1
+func partition(nums []int, start, end int) int {
+	idx := rand.Intn(end-start+1) + start
+	base := nums[idx]
+	nums[idx], nums[start] = nums[start], nums[idx]
+	left, right := start+1, end
+	for left < right {
+		for left < right && nums[left] <= base {
+			left++
 		}
-		if x < y {
-			datas[x] = datas[y]
-			x = x + 1
+		for left < right && nums[right] >= base {
+			right--
 		}
-		for x < y && datas[x] <= base {
-			x = x + 1
+		if left != right {
+			nums[left], nums[right] = nums[right], nums[left]
+			left++
+			right--
 		}
-		if x < y {
-			datas[y] = datas[x]
-			y = y - 1
-		}
-
 	}
-	datas[x] = base
-	quick_sort(datas, l, x-1)
-	quick_sort(datas, x+1, r)
+
+	if left == right && nums[right] > base {
+		right--
+	}
+
+	nums[start], nums[right] = nums[right], nums[start]
+	return right
 }
