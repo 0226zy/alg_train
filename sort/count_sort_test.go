@@ -8,7 +8,7 @@ import (
 	"github.com/glycerine/goconvey/convey"
 )
 
-func TestQuickSort(t *testing.T) {
+func TestCountSort(t *testing.T) {
 	sort_cases := []struct {
 		input  []int
 		expect []int
@@ -34,12 +34,20 @@ func TestQuickSort(t *testing.T) {
 			input:  []int{5, 4, 3, 2, 1},
 			expect: []int{1, 2, 3, 4, 5},
 		},
+		{
+			input:  []int{1, 100, 8000, 200},
+			expect: []int{1, 100, 200, 8000},
+		},
+		{
+			input:  []int{1, -100, 8000, -200, 100, -1, -2, 3},
+			expect: []int{-200, -100, -2, -1, 1, 3, 100, 8000},
+		},
 	}
 
 	for _, sort_case := range sort_cases {
 		convey.Convey("QuickSort:", t, func() {
 			fmt.Println(sort_case.input)
-			sort.QuickSort(sort_case.input)
+			sort.CountSort(sort_case.input)
 			convey.Convey("input:"+sort.ToString(sort_case.input), func() {
 				convey.So(sort_case.input, convey.ShouldResemble, sort_case.expect)
 			})
